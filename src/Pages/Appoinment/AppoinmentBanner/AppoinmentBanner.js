@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
 import chair from '../../../assets/images/chair.png'
 import { DayPicker } from 'react-day-picker';
-import { format } from 'date-fns';
 import bg from '../../../assets/images/bg.png'
 
-const AppoinmentBanner = () => {
-    const [selectedDate, setSelectedDate] = useState(new Date());
+const AppoinmentBanner = ({ selectedDate, setSelectedDate }) => {
+    /*jeheto ei same Date sate ta 2jaygay use hobe tai ami children hisebe ek jaygy set kore, 
+      props hesebe children thke received korlei hoy. Alda state dieo kora jay */
+    // const [selectedDate, setSelectedDate] = useState(new Date());
 
     return (
         <section className='' style={{
@@ -22,7 +22,7 @@ const AppoinmentBanner = () => {
                                 selected={selectedDate}
                                 onSelect={setSelectedDate}
                             ></DayPicker>
-                            <p>You have selected date: {format(selectedDate, 'PP')}</p>
+                            {/* <p>You have selected date: {format(selectedDate, 'PP')}</p> */}
                         </div>
                     </div>
                 </div>
