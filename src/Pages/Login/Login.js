@@ -1,12 +1,27 @@
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthProvider';
 
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
+    const { signInLogIn } = useContext(AuthContext);
+    const [loginError, setLoginError] = useState('');
+
 
     const handleLogin = data => {
         console.log(data);
+        setLoginError(''); // loginError khawrpor clear kore dibo
+        signInLogIn(data.email, data.password)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+            })
+            .catch(error => {
+                console.log(error.message)
+                setLoginError(error.message)
+            });
     }
 
     return (
@@ -36,6 +51,11 @@ const Login = () => {
                     </div>
                     <input className='btn btn-accent w-full' type="submit" value="Login" />
                 </form>
+                <div>
+                    {
+                        loginError && <p className='text-red-600'>{loginError}</p>
+                    }
+                </div>
                 <p>New to Doctors Portal? <Link to="/signup" className='text-secondary'>Create a new account.</Link></p>
                 <div className="divider">OR</div>
                 <button className='btn btn-outline w-full'>CONTINUE WITH GOOGLE</button>
