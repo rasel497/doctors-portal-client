@@ -9,7 +9,6 @@ const Login = () => {
         console.log(data);
     }
 
-    // 10:20s
     return (
         <div className='h-[800px] flex justify-center items-center'>
             <div className='w-96 p-7'>
