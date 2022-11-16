@@ -22,7 +22,7 @@ const AuthProvider = ({ children }) => {
     }
     // 05.updateUser
     const updateUser = (userInfo) => {
-        return updateProfile(user, userInfo);
+        return updateProfile(auth.currentUser, userInfo);
     }
 
     // 04.LogOut

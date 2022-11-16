@@ -1,22 +1,22 @@
-import { async } from '@firebase/util';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import BookingModal from '../BookingModal/BookingModal';
 import AppoinmentOption from './AppoinmentOption';
+
 
 const AvailableAppoinments = ({ selectedDate }) => {
     // const [appoinmentOptions, setAppoinmentOptions] = useState([]);
     const [treatment, setTreatment] = useState(null);
-
+    const date = format(selectedDate, 'PP');
 
     // using React query / tanstackQuery load data from server api basic
     // amra agee sameVabe useEffect diye data load kortam ekhon React query korsi see previous commit
     const { data: appoinmentOptions = [] } = useQuery({
-        queryKey: ['appoinmentOptions'],
+        queryKey: ['appoinmentOptions', date],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/appoinmentOptions');
-            const data = await res.send.json();
+            const res = await fetch(`http://localhost:5000/appoinmentOptions?date=${date}`);
+            const data = await res.json();
             return data;
         }
     });
