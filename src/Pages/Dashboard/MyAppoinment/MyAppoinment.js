@@ -24,9 +24,7 @@ const MyAppoinment = () => {
     // fetch(`http://localhost:5000/bookings?email=${user?.email}`, {
     //     headers: {
     //         authorization: `bearer ${localStorage.getItem('accessToken')}`
-
     //     }
-
     // })
     //     .then(res => res.json())
     //     .then(data => console.log(data));
@@ -34,6 +32,7 @@ const MyAppoinment = () => {
 
     return (
         <div>
+
             <div className="overflow-x-auto">
                 <table className="table w-full">
                     <thead>
@@ -47,7 +46,7 @@ const MyAppoinment = () => {
                     </thead>
                     <tbody>
                         {
-                            bookings.map((booking, i) => <tr key={booking._id}>
+                            bookings?.length && bookings.map((booking, i) => <tr key={booking._id}>
                                 <th>{i + 1}</th>
                                 <td>{booking.paitent}</td>
                                 <td>{booking.treatment}</td>

@@ -11,7 +11,7 @@ const AllUsers = () => {
             const data = await res.json();
             return data;
         }
-    })
+    });
 
     // handleMakeAdmin
     const handleMakeAdmin = id => {
