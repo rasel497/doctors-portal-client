@@ -21,6 +21,17 @@ const MyAppoinment = () => {
         }
     });
 
+    // fetch(`http://localhost:5000/bookings?email=${user?.email}`, {
+    //     headers: {
+    //         authorization: `bearer ${localStorage.getItem('accessToken')}`
+
+    //     }
+
+    // })
+    //     .then(res => res.json())
+    //     .then(data => console.log(data));
+
+
     return (
         <div>
             <div className="overflow-x-auto">
