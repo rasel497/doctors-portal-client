@@ -1,10 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
-import { reauthenticateWithPhoneNumber } from 'firebase/auth';
-import React from 'react';
+import React, { useState } from 'react';
+import ConfirmationModal from '../../Shared/ConfirmationModal/ConfirmationModal';
 import Loading from '../../Shared/Loading/Loading';
 
 
 const Managedoctors = () => {
+    const [deletingDoctor, setDeletingDoctor] = useState(null);
+
+    const closeModal = () => {
+        setDeletingDoctor(null);
+    }
+
+    // using delete doctor
+    const hnadleDeletingDoctor = doctor => {
+        console.log(doctor);
+    }
+
     const { data: doctors, isLoading } = useQuery({
         queryKey: ['doctors'],
         queryFn: async () => {
@@ -56,12 +67,26 @@ const Managedoctors = () => {
                                 <td>{doctor.name}</td>
                                 <td>{doctor.email}</td>
                                 <td>{doctor.specialty}</td>
-                                <td><button className='btn btn-sm btn-error'>Delete</button> </td>
+                                <td>
+                                    <label onClick={() => setDeletingDoctor(doctor)} htmlFor="confirmation-modal" className="btn btn-sm btn-error">Delete</label>
+                                </td>
                             </tr>)
                         }
                     </tbody>
                 </table>
             </div>
+            {
+                deletingDoctor && <ConfirmationModal
+                    title={`Are you sure you want to delete?`}
+                    message={`If you delete ${deletingDoctor.name}. It cannot be undone.`}
+                    successAction={hnadleDeletingDoctor}
+                    modalData={deletingDoctor}
+                    closeModal={closeModal}
+
+                >
+
+                </ConfirmationModal>
+            }
         </div>
     );
 };
