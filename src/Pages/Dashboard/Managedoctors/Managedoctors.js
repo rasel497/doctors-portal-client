@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import ConfirmationModal from '../../Shared/ConfirmationModal/ConfirmationModal';
 import Loading from '../../Shared/Loading/Loading';
 
@@ -7,16 +8,8 @@ import Loading from '../../Shared/Loading/Loading';
 const Managedoctors = () => {
     const [deletingDoctor, setDeletingDoctor] = useState(null);
 
-    const closeModal = () => {
-        setDeletingDoctor(null);
-    }
 
-    // using delete doctor
-    const hnadleDeletingDoctor = doctor => {
-        console.log(doctor);
-    }
-
-    const { data: doctors, isLoading } = useQuery({
+    const { data: doctors, isLoading, refetch } = useQuery({
         queryKey: ['doctors'],
         queryFn: async () => {
             try {
@@ -34,10 +27,32 @@ const Managedoctors = () => {
         }
     });
 
-    // loding for reload
+    // closeModal props Sent ConfirmationModal.js
+    const closeModal = () => {
+        setDeletingDoctor(null);
+    }
+
+    // using for page reload error avoid
     if (isLoading) {
         return <Loading></Loading>
     }
+
+    // using delete doctor
+    const hnadleDeletingDoctor = doctor => {
+        fetch(`http://localhost:5000/doctors/${doctor._id}`, {
+            method: 'DELETE',
+            headers: {
+                authorization: `bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                refetch();
+                toast.success(`Doctor ${doctor.name} deleted succesfully`);
+            })
+    }
+
     return (
         <div>
             <h2 className='text-2xl'>Manage Doctors: {doctors?.length}</h2>
@@ -80,6 +95,7 @@ const Managedoctors = () => {
                     title={`Are you sure you want to delete?`}
                     message={`If you delete ${deletingDoctor.name}. It cannot be undone.`}
                     successAction={hnadleDeletingDoctor}
+                    successButtonName="Delete"
                     modalData={deletingDoctor}
                     closeModal={closeModal}
 
