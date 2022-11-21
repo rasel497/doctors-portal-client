@@ -52,7 +52,7 @@ const Managedoctors = () => {
                 toast.success(`Doctor ${doctor.name} deleted succesfully`);
             })
     }
-
+    // 4:2777777777
     return (
         <div>
             <h2 className='text-2xl'>Manage Doctors: {doctors?.length}</h2>
@@ -70,7 +70,7 @@ const Managedoctors = () => {
                     </thead>
                     <tbody>
                         {
-                            doctors.map((doctor, i) => <tr key={doctor._id}>
+                            doctors?.map((doctor, i) => <tr key={doctor._id}>
                                 <th>{i + 1}</th>
                                 <td>
                                     <div className="avatar">
