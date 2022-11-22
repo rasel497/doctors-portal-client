@@ -5,6 +5,9 @@ const CheckoutForm = ({ booking }) => {
     const stripe = useStripe();
     const elements = useElements();
     const [cardError, setCardError] = useState('');
+    const [success, setSuccess] = useState('');
+    const [processing, setProcessing] = useState(false);
+    const [transactionId, setTransactionId] = useState('');
     const [clientSecret, setClientSecret] = useState("");
     const { price, email, patient } = booking;
 
@@ -49,7 +52,10 @@ const CheckoutForm = ({ booking }) => {
         else {
             setCardError('');
         }
+        setSuccess('');
+        setProcessing(true);
 
+        // '{PAYMENT_INTENT_CLIENT_SECRET}'
         const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(
             clientSecret,
             {
@@ -62,6 +68,18 @@ const CheckoutForm = ({ booking }) => {
                 },
             },
         );
+
+        if (confirmError) {
+            setCardError(confirmError.message);
+            return;
+        }
+        // console.log('PaymentIntent', paymentIntent);
+
+        if (paymentIntent.status === "succeeded") {
+            setSuccess('Congrates! your payment completed.');
+            setTransactionId(paymentIntent.id);
+        }
+        setProcessing(false);
 
     }
 
@@ -87,11 +105,17 @@ const CheckoutForm = ({ booking }) => {
                 <button
                     className='btn btn-sm mt-4 btn-primary'
                     type="submit"
-                    disabled={!stripe || !clientSecret}>
+                    disabled={!stripe || !clientSecret || processing}>
                     Pay
                 </button>
             </form>
             <p className='text-red-500'>{cardError}</p>
+            {
+                success && <div>
+                    <p className='text-green-500'>{success}</p>
+                    <p>Your transactionId: <span className='text-sm font-bold'>{transactionId}</span></p>
+                </div>
+            }
         </>
     );
 };
