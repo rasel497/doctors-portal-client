@@ -8,8 +8,8 @@ const CheckoutForm = ({ booking }) => {
     const [success, setSuccess] = useState('');
     const [processing, setProcessing] = useState(false);
     const [transactionId, setTransactionId] = useState('');
-    const [clientSecret, setClientSecret] = useState("");
-    const { price, email, patient } = booking;
+    const [clientSecret, setClientSecret] = useState('');
+    const { price, email, patient, _id } = booking;
 
 
     useEffect(() => {
@@ -25,7 +25,6 @@ const CheckoutForm = ({ booking }) => {
             .then((res) => res.json())
             .then((data) => setClientSecret(data.clientSecret));
     }, [price]);
-
 
 
     const handleSubmit = async (event) => {
@@ -76,8 +75,34 @@ const CheckoutForm = ({ booking }) => {
         // console.log('PaymentIntent', paymentIntent);
 
         if (paymentIntent.status === "succeeded") {
-            setSuccess('Congrates! your payment completed.');
-            setTransactionId(paymentIntent.id);
+            console.log('card info', card);
+            // setSuccess('Congrates! your payment completed.');
+            // setTransactionId(paymentIntent.id);
+
+            // create object and load or response server side api /payments
+            const payments = {
+                price,
+                transactionId: paymentIntent.id,
+                email,
+                bookingId: _id
+            }
+
+            fetch('http://localhost:5000/payments', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json',
+                    authorization: `bearer ${localStorage.getItem('accessToken')}`
+                },
+                body: JSON.stringify(payments)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.insertedId) {
+                        setSuccess('Congrates! your payment completed.');
+                        setTransactionId(paymentIntent.id);
+                    }
+                })
         }
         setProcessing(false);
 
