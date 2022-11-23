@@ -13,7 +13,7 @@ const Managedoctors = () => {
         queryKey: ['doctors'],
         queryFn: async () => {
             try {
-                const res = await fetch('http://localhost:5000/doctors', {
+                const res = await fetch('https://doctors-portal-server-kappa-nine.vercel.app/doctors', {
                     headers: {
                         authorization: `bearer ${localStorage.getItem('accessToken')}`
                     }
@@ -39,7 +39,7 @@ const Managedoctors = () => {
 
     // using delete doctor
     const hnadleDeletingDoctor = doctor => {
-        fetch(`http://localhost:5000/doctors/${doctor._id}`, {
+        fetch(`https://doctors-portal-server-kappa-nine.vercel.app/doctors/${doctor._id}`, {
             method: 'DELETE',
             headers: {
                 authorization: `bearer ${localStorage.getItem('accessToken')}`
@@ -70,7 +70,7 @@ const Managedoctors = () => {
                     </thead>
                     <tbody>
                         {
-                            doctors?.map((doctor, i) => <tr key={doctor._id}>
+                            doctors?.length && doctors.map((doctor, i) => <tr key={doctor._id}>
                                 <th>{i + 1}</th>
                                 <td>
                                     <div className="avatar">

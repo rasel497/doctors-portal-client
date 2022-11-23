@@ -6,7 +6,7 @@ import { AuthContext } from '../../../contexts/AuthProvider';
 const MyAppoinment = () => {
     const { user } = useContext(AuthContext);
 
-    const url = `http://localhost:5000/bookings?email=${user?.email}`;
+    const url = `https://doctors-portal-server-kappa-nine.vercel.app/bookings?email=${user?.email}`;
 
     // Display User specific Appointments using Data Table
     const { data: bookings = [] } = useQuery({
@@ -20,9 +20,11 @@ const MyAppoinment = () => {
             const data = await res.json();
             return data;
         }
-    });
 
-    // fetch(`http://localhost:5000/bookings?email=${user?.email}`, {
+    });
+    console.log(bookings);
+
+    // fetch(`https://doctors-portal-server-kappa-nine.vercel.app/bookings?email=${user?.email}`, {
     //     headers: {
     //         authorization: `bearer ${localStorage.getItem('accessToken')}`
     //     }

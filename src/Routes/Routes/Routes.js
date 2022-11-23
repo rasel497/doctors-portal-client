@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom"
 import DashBoardLayout from "../../Layout/DashBoardLayout";
 import Main from "../../Layout/Main"
+import About from "../../Pages/About/About";
 import Appoinment from "../../Pages/Appoinment/Appoinment/Appoinment";
 import AddDoctor from "../../Pages/Dashboard/AddDoctor/AddDoctor";
 import AllUsers from "../../Pages/Dashboard/AllUsers/AllUsers";
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
             {
                 path: '/appoinment',
                 element: <Appoinment></Appoinment>
+            },
+            {
+                path: '/about',
+                element: <About></About>
             }
         ]
     },
@@ -63,8 +68,8 @@ const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/payment/:id',
-                element: <AdminRoute><Payment></Payment></AdminRoute>,
-                loader: ({ params }) => fetch(`http://localhost:5000/bookings/${params.id}`)
+                element: <Payment></Payment>,
+                loader: ({ params }) => fetch(`https://doctors-portal-server-kappa-nine.vercel.app/bookings/${params.id}`)
             }
         ]
     }

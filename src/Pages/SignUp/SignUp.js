@@ -45,7 +45,7 @@ const SignUp = () => {
     // Save Registered user information in the database
     const saveUser = (name, email) => {
         const user = { name, email };
-        fetch('http://localhost:5000/users', {
+        fetch('https://doctors-portal-server-kappa-nine.vercel.app/users', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
